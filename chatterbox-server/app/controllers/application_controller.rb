@@ -3,4 +3,36 @@ class ApplicationController < Sinatra::Base
   
   # Add routes
   
+get '/messages' do 
+  messages = Message.all
+  messages.to_json
+end
+
+get '/messages/created_at' do
+messages = Message.all.sort_by{|message| message.created_at}
+messages.to_json
+end
+
+post '/messages' do
+message = Message.create(
+  body: params[:body],
+  username: params[:username]
+)
+message.to_json
+end
+
+patch '/messages/:id' do
+message = Message.find(params[:id])
+message.update(
+  body: params[:body]
+)
+message.to_json
+end
+
+delete '/messages/:id' do
+message = Message.find(params[:id])
+message.destroy
+message.to_json
+end
+
 end
